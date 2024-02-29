@@ -1,28 +1,35 @@
 using UnityEngine;
 using System.IO;
 
+/// <summary>
+/// This script is used to log messages to a file. It is used for testing purposes.
+/// </summary>
 public class Logger : MonoBehaviour
 {
     private string logFilePath;
 
+    /// <summary>
+    /// Awake is called when the script instance is being loaded. It gets the path to the log file and clears it at the start of the session.
+    /// </summary>
     private void Awake()
     {
-        // Set the log file path. You can change "Application.persistentDataPath" to any path you prefer.
+        // Set the log file path to the persistent data path
         logFilePath = Path.Combine(Application.persistentDataPath, "gameLog.txt");
 
-        // Optional: Clear the log file at the start of the session.
+        // Clear the log file at the start of the session.
         File.WriteAllText(logFilePath, string.Empty);
     }
 
+    /// <summary>
+    /// This method is used to log messages to the log file and the Unity Console.
+    /// </summary>
+    /// <param name="message"></param>
     public void Log(string message)
     {
-        // Include the current time for each log entry for better tracking
         string logMessage = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ": " + message;
-
-        // Append the log message to the log file
         File.AppendAllText(logFilePath, logMessage + "\n");
 
-        // Also log to the Unity Console if needed
+        // For testing purposes, also log the message to the Unity Console
         Debug.Log(message);
     }
 }

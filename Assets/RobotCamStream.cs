@@ -2,7 +2,15 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Video;
 
+/// <summary>
+/// 
+/// </summary>
 [RequireComponent(typeof(VideoPlayer))]
+
+/// <summary>
+/// This script is used to stream video from a URL and handle errors and retries.
+/// It does not work! There is a problem with the format that it receives from the server.
+/// </summary>
 public class RobotCamStream : MonoBehaviour
 {
     public string streamUrl = "http://192.168.1.5:8000/stream.m3u8";
@@ -12,12 +20,18 @@ public class RobotCamStream : MonoBehaviour
     private VideoPlayer videoPlayer;
     private int currentRetries = 0;
 
+    /// <summary>
+    /// Start is called before the first frame and gets the VideoPlayer component and sets up the video player.
+    /// </summary>
     void Start()
     {
         videoPlayer = GetComponent<VideoPlayer>();
         SetupVideoPlayer();
     }
 
+    /// <summary>
+    /// Sets up the video player with the stream URL and other settings.
+    /// </summary>
     void SetupVideoPlayer()
     {
         videoPlayer.url = streamUrl;
@@ -32,6 +46,9 @@ public class RobotCamStream : MonoBehaviour
         TryPrepareVideo();
     }
 
+    /// <summary>
+    /// Tries to prepare the video for playback.
+    /// </summary>
     void TryPrepareVideo()
     {
         if (currentRetries < maxRetries)
@@ -40,11 +57,19 @@ public class RobotCamStream : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles the prepare completed event of the video player.
+    /// </summary>
+    /// <param name="source">The video player source.</param>
     private void HandlePrepareCompleted(VideoPlayer source)
     {
         videoPlayer.Play();
     }
 
+    /// <summary>
+    /// Handles the video error event of the video player.
+    /// </summary>
+    /// <param name="source">The video player source.</param>
     private void HandleVideoError(VideoPlayer source, string message)
     {
         Debug.LogError("Video Player Error: " + message);

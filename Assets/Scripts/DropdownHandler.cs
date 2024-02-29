@@ -1,22 +1,38 @@
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI; // Import this namespace to work with UI components
-using TMPro; // 
+using UnityEngine.UI;
+using TMPro;
+
+/// <summary>
+/// This script is used to handle the dropdown in the UI. When the dropdown value is changed, it sends the new value to the server.
+/// The Dropdown is used to controll the mode of the robot. 
+/// </summary>
+/// <remarks>
+/// - Supported modes at the moment:
+///   * Idle
+///   * Drive
+///   * Arm
+///   * Emergency Stop
+/// </remarks>
 public class DropdownHandler : MonoBehaviour
 {
 
-    // ModeValues 
+    /// <summary>
+    /// The ModeValues interface used to send the mode value to the robot.
+    /// </summary>
+    /// <remarks> This interface has to match with the ROS2 interface from the robot </remarks>
     class ModeValues
     {
         public int mode;
     }
 
     public TMP_Dropdown dropdown;
-
     private NetworkManager networkManager;
     private ModeValues modeValues = new ModeValues();
 
-
+    /// <summary>
+    /// Initialization of the script by finding the NetworkManager component in the scene and subscribing to the onValueChanged event of the dropdown.
+    /// </summary>
     void Start()
     {
         // Ensure the Dropdown is assigned
@@ -28,7 +44,9 @@ public class DropdownHandler : MonoBehaviour
         networkManager = NetworkManager.Instance;
     }
 
-    // This method will be called whenever the Dropdown's value changes
+    /// <summary>
+    /// This method is called when the dropdown value is changed. It sends the new value to the server.
+    /// </summary>
     void DropdownValueChanged(TMP_Dropdown change)
     {
         Debug.Log($"New Dropdown Value Selected: {change.value}");
@@ -38,7 +56,10 @@ public class DropdownHandler : MonoBehaviour
         SendDataToServer(JsonUtility.ToJson(modeValues));
     }
 
-
+    /// <summary>
+    /// This method is used to send the mode value to the server.
+    /// </summary>
+    /// <param name="data"></param>
     void SendDataToServer(string data)
     {
         if (networkManager != null)
@@ -51,6 +72,10 @@ public class DropdownHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Get method for the dropdown value.
+    /// </summary>
+    /// <returns>Dropdown.value</returns>
     public int GetDropdownValue()
     {
         return dropdown.value;

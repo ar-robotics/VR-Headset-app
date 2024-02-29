@@ -1,13 +1,41 @@
 using UnityEngine;
+
+/// <summary>
+/// This class is used to get the hand gesture and rotation data and send it to the server.
+/// It is used for testing purposes to control the robot arm with hand gestures. 
+/// <remarks> This class does not work as expected and needs to be fixed </remarks> 
+/// </summary>
 public class HandGestureAndRotation : MonoBehaviour
 {
+    /// <summary>
+    /// The OVRSkeleton component used to track hand gestures.
+    /// </summary>
     public OVRSkeleton handSkeleton;
+
+    /// <summary>
+    /// The OVRHand component used to track hand gestures.
+    /// </summary>
     public OVRHand hand;
 
+    /// <summary>
+    /// The NetworkManager component used to send data to the server.
+    /// </summary>
     private NetworkManager networkManager;
     float lastSendTime;
+
+    /// <summary>
+    /// The interval at which to send data to the server.
+    /// </summary>
     public float sendInterval = 0.3f;
 
+    /// <summary>
+    /// Flag to indicate if the script is running in testing mode.
+    /// </summary>
+    public bool isTesting = false;
+
+    /// <summary>  
+    /// The HandData interface used to send the data to the robot.
+    /// <remarks> This interface has to match with the ROS2 interface from the robot </remarks>
     class HandData
     {
         public int pinch;
@@ -15,15 +43,24 @@ public class HandGestureAndRotation : MonoBehaviour
     }
 
     HandData handData = new HandData();
+
+    /// <summary>
+    /// Initilization of the script by finding the NetworkManager component in the scene.
+    /// </summary>
     void Start()
     {
+        if (!isTesting) return;
         networkManager = NetworkManager.Instance;
 
     }
+
+    /// <summary>
+    /// Update is called once per frame and is used to get the hand gesture and rotation data and send it to the server.
+    /// Returns if isTesting is false.
+    /// </summary>
     private void Update()
     {
-        // NOT in use for now!
-        return;
+        if (!isTesting) return;
         if (handSkeleton == null || hand == null)
         {
             Debug.LogWarning("HandSkeleton or OVRHand reference is missing.");
@@ -80,6 +117,10 @@ public class HandGestureAndRotation : MonoBehaviour
         // For example, you could trigger an event or control an object in your scene
     }
 
+    /// <summary>
+    /// Sends the data to the server.
+    /// <param name="data">The data to send.</param>
+    /// </summary>
     void SendDataToServer(string data)
     {
         if (networkManager != null)

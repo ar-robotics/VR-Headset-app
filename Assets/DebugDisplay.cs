@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// This script is used to display debug logs on the a VR screen for testing purposes.
+/// This is a simplified version of the DebugDisplayPro script, it is the first version of the script.
+/// For documentation on the DebugDisplayPro script, see the <see cref="DebugDisplayPro"/> class.
+/// </summary>
 public class DebugDisplay : MonoBehaviour
 {
 
     Dictionary<string, string> debugLogs = new Dictionary<string, string>();
     public Text debugText;
 
-    // // Start is called before the first frame update
-    // void Start()
-    // {
-
-    // }
-
-    // Update is called once per frame
     private void Update()
     {
         Debug.Log("time:" + Time.time);
@@ -32,7 +30,6 @@ public class DebugDisplay : MonoBehaviour
     {
         Application.logMessageReceived -= HandleLog;
     }
-
 
     void HandleLog(string logString, string stackTrace, LogType type)
     {

@@ -491,22 +491,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: This is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkkThis
-    is a test knsdlkfndklfnslkdnfksndlkfnskldnflknslkdnflsdkflskndflksndflksndflknsdlkfnslkdnfskdfnklsndflsdnflksndflksndlkfnsldkfnslkdnflksndflksndlfkkkkkkkkkkkkkkkkkk
+  m_text: Log screen
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2151,6 +2136,7 @@ MonoBehaviour:
   handSkeleton: {fileID: 1577749905}
   hand: {fileID: 1577749906}
   sendInterval: 0.3
+  isTesting: 0
 --- !u!4 &1157739014
 Transform:
   m_ObjectHideFlags: 0
@@ -2983,6 +2969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sendInterval: 1
+  isTesting: 0
 --- !u!65 &1577749899
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3414,6 +3401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb05a6fd85e5aa41847fcb94ab003bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverIP: 192.168.1.6
 --- !u!4 &1770314576
 Transform:
   m_ObjectHideFlags: 0
@@ -4008,8 +3996,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f39249d2137d84186e84b143ec8c1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snapshotUrl: http://192.168.1.6:5000/snapshot
-  refreshRate: 0.03
+  snapshotUrl: http://192.168.1.5:5000/snapshot
+  refreshRate: 0.01
 --- !u!1 &2089110258
 GameObject:
   m_ObjectHideFlags: 0

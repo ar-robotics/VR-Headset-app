@@ -7,8 +7,18 @@ using System.Timers;
 using System.Linq;
 using System;
 
+/// <summary>
+/// This script is used to detect the hand position within a cube and send control values to the robot based on the hand position.
+/// This class is used for both controlling the robot and the arm.
+/// This class will be refactored to be more modular and to use interfaces which implemented as state machines.
+/// </summary>
 public class HandDetectionCube : MonoBehaviour
 {
+    /// <summary>
+    /// The control values used to control the robot for controlling the robot (car).
+    /// The is the interface between the VR and the Robot. 
+    /// <remarks> This interface has to match with the ROS2 interface from the robot </remarks>
+    /// </summary>
     class RobotControlValues
     {
         public float x;
@@ -16,6 +26,11 @@ public class HandDetectionCube : MonoBehaviour
         public int speed;
     }
 
+    /// <summary>
+    /// The control values used to control the robot for controlling the arm.
+    /// The is the interface between the VR and the Robot. 
+    /// <remarks> This interface has to match with the ROS2 interface from the robot </remarks>
+    /// </summary>
     public class RobotControlX
     {
         public float x;
@@ -24,24 +39,58 @@ public class HandDetectionCube : MonoBehaviour
         public float strength;
     }
 
+    /// <summary>
+    /// The DropdownHandler component used to get the mode values from the UI(VR).
+    /// Modes are: Idle, Drive, Arm, and Emergency stop
+    /// </summary>
+    /// <remarks> The mode values (0 , 1, 2, 3) has to match with the ROS2 interface from the robot </remarks>
     public DropdownHandler dropdownHandler;
 
+    /// <summary>
+    /// The OVRSkeleton component used to track hand gestures.
+    /// </summary>
     public OVRSkeleton handSkeleton;
+
+    /// <summary>
+    /// The OVRHand component used to track hand gestures.
+    /// </summary>
     public OVRHand rightHand;
     private RobotControlValues controlValues = new RobotControlValues();
     private RobotControlX controlX = new RobotControlX();
+
+    /// <summary>
+    /// The NetworkManager component used to send data to the server.
+    /// </summary>
     private NetworkManager networkManager;
+
+    /// <summary> 
+    /// The flag to indicate if the hand is detected within the cube.
+    /// </summary>
     private bool isHandDetected = false;
+
+    /// <summary>  
+    /// The interval at which to calculate the distances.
+    /// </summary>
     public float distanceCalculationInterval = 0.5f;   // Interval in seconds to calculate distances
     float lastSendTime;
+
+    /// <summary>
+    /// The interval at which to send data to the server.
+    /// </summary>
     public float sendInterval = 0.5f;
-    // The visualIndicator 
+
+    /// <summary>
+    /// The transform of the visual indicator. That is a dot which indicates the x and z position of the TipBoneEnd of the users hand.
+    /// </summary>
     private Transform visualIndicatorTransform;
 
     private Material cubeMaterial;
     public Color insideColor = new Color(1, 0, 0, 0.1f); // Red with low opacity
     private Color originalColor;
 
+    /// <summary>
+    /// The script is called before the first frame update and is used to initialize the necessary variables.
+    /// </summary>
     void Start()
     {
         // Working but we have to install some packages to get access to the logfile in VR headset
@@ -61,6 +110,11 @@ public class HandDetectionCube : MonoBehaviour
         networkManager = NetworkManager.Instance;
     }
 
+
+    /// <summary>
+    /// Update is called once per frame and is used to log the position of the Hand_WristRoot bone in the VR headset.
+    /// This is used for testing purposes.
+    /// </summary>
     void Update()
     {
         int Hand_WristRoot = (int)OVRPlugin.BoneId.Hand_WristRoot;
@@ -77,7 +131,7 @@ public class HandDetectionCube : MonoBehaviour
 
 
     /// <summary>
-    /// Happens when colliders enter the cube
+    /// This method is called when the hand enters the cube area. It changes the color of the cube and starts the coroutine to calculate the distances repeatedly.
     /// </summary>
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
@@ -97,8 +151,6 @@ public class HandDetectionCube : MonoBehaviour
             OVRBone WristBone = handSkeleton.Bones[Hand_WristRoot];
             StartCoroutine(RepeatedlyDistanceCalculation(WristBone.Transform));
         }
-
-
     }
 
     /// <summary>
@@ -141,6 +193,10 @@ public class HandDetectionCube : MonoBehaviour
         controlValues.speed = 0;
     }
 
+    /// <summary>
+    /// Asynchronous method to calculate the distances repeatedly when the coroutine is started.
+    /// </summary>
+    /// <param name="handTransform"></param>
     private IEnumerator RepeatedlyDistanceCalculation(Transform handTransform)
     {
 
@@ -150,13 +206,17 @@ public class HandDetectionCube : MonoBehaviour
             yield return new WaitForSeconds(distanceCalculationInterval);
         }
     }
+
+    /// <summary>
+    /// Calculate the distances from the hand to the edges of the cube
+    /// This is used for debugging and understanding the hand position within the cube
+    /// </summary>
+    /// <param name="handPosition"></param>
     private void CalculateDistances(Vector3 handPosition)
     {
-        // Assuming the cube's local scale is uniform and using its position to find edges
         float halfScaleX = transform.localScale.x / 2;
         float halfScaleZ = transform.localScale.z / 2;
 
-        // Calculate distances from the hand to each edge
         float distanceToLeftEdge = handPosition.x - (transform.position.x - halfScaleX);
         float distanceToRightEdge = (transform.position.x + halfScaleX) - handPosition.x;
         float distanceToFrontEdge = (transform.position.z + halfScaleZ) - handPosition.z;
@@ -167,8 +227,6 @@ public class HandDetectionCube : MonoBehaviour
         Debug.Log($"Distance to Right Edge: {distanceToRightEdge}");
         Debug.Log($"Distance to Front Edge: {distanceToFrontEdge}");
         Debug.Log($"Distance to Back Edge: {distanceToBackEdge}");
-
-
     }
 
     /// <summary>
@@ -181,25 +239,24 @@ public class HandDetectionCube : MonoBehaviour
         Vector3 handLocalPosition = transform.InverseTransformPoint(handPosition);
 
         // Calculate normalized X within -1 to 1 range
-        // This directly uses the local position within the cube, assuming cube's center at local origin
         float normalizedX = Mathf.Clamp(handLocalPosition.x / (transform.localScale.x / 2), -1, 1);
 
         // Calculate normalized Z within 0 to 1 range
-        // Adjust the calculation to correctly map the full depth of the cube from back (0) to front (1)
         float normalizedZ = Mathf.Clamp((handLocalPosition.z / (transform.localScale.z / 2) + 1) / 2, 0, 1);
 
-
+        // Calculate normalized Y within 0 to 1 range
         float scaleY = transform.localScale.y;
 
+        // Calculate the normalized Y value within 0 to 1 range
         float normalizedY = (handLocalPosition.y + scaleY / 2) / scaleY;
         normalizedY = Mathf.Clamp(normalizedY, 0, 1);
 
-        // Log normalized values to the console (or use these values for robot control, etc.)
+        // Map the normalized Y value to a range of -1 to 1
         float mappedY = (normalizedY - 0.3f) * 3.0f;
+
         Debug.Log($"Normalized X: {normalizedX}");
         Debug.Log($"Normalized Z: {normalizedZ}");
         Debug.Log($"Normalized Y: {mappedY}");
-
 
         // Calculate speed, send control values to the robot, and update the visual indicator
         int speed = CalculateSpeed(normalizedX, normalizedZ);
@@ -207,6 +264,12 @@ public class HandDetectionCube : MonoBehaviour
         UpdateVisualIndicator(normalizedX, normalizedZ);
     }
 
+    /// <summary>
+    /// Update the position of the visual indicator within the detection cube according to the normalized X and Z values.
+    /// This is to give a feedback to the user about the hand position within the cube which indicates the direction and the speed of the robot.
+    /// </summary>
+    /// <param name="normalizedX"></param>
+    /// <param name="normalizedZ"></param>
     private void UpdateVisualIndicator(float normalizedX, float normalizedZ)
     {
 
@@ -219,8 +282,6 @@ public class HandDetectionCube : MonoBehaviour
         float worldX = normalizedX * scaleX;
         float worldZ = normalizedZ * scaleZ;
 
-        // Update the position of the visual indicator within the detection cube
-        // Assuming the visual indicator should move at a constant height above the detection cube
         Debug.Log($"New Position - X: {worldX}");
         Debug.Log($"New Position -Y: {unchangedY}");
         Debug.Log($"New Position -Z: {worldZ}");
@@ -231,10 +292,13 @@ public class HandDetectionCube : MonoBehaviour
 
     /// <summary>
     ///  Sending the information to the robot through socket communication.
-    ///  Speed values is between -100 and 100, where 0 is stop, 100 is full speed forward, and -100 is full speed backward
+    ///  The directions is calculated based on the normalized X and Z values. X goes from -1 (drive left) to 1 (drive right) and Z goes from 0 (stop) to 1 (drive forward).
+    ///  Speed is calculated based in how far the hand is from the edges, the closer the hand is to the edge the faster the robot moves.
+    ///  The max speed is when the hand reaches the edge of the cube.
     /// </summary>
     /// <param name="normalizedX"></param>
     /// <param name="normalizedZ"></param>
+    /// <param name="normalizedY"></param>
     /// <param name==speed></param>" 
     private void SendControlValues(float normalizedX, float normalizedZ, float normalizedY, int speed = 50)
     {
@@ -308,12 +372,20 @@ public class HandDetectionCube : MonoBehaviour
         }
         return (int)calculatedSpeed;
     }
+
+    /// <summary>
+    /// Handles the recieved data from the server.
+    /// It is not in use at the moment.
+    /// </summary>
     private void HandleReceivedData(string data)
     {
         // Process the received data
         Debug.Log($"ObjectController received data: {data}");
     }
 
+    /// <summary>
+    /// Sends the data to the server.
+    /// </summary>
     void SendDataToServer(string data)
     {
         if (networkManager != null)

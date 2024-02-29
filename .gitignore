@@ -4,6 +4,8 @@
 #
 
 .vscode/
+documentation/
+Assets/TextMesh Pro/
 
 /[Ll]ibrary/
 /[Tt]emp/
