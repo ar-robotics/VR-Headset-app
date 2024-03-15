@@ -16,7 +16,7 @@ public class Logger : MonoBehaviour
         // Set the log file path to the persistent data path
         logFilePath = Path.Combine(Application.persistentDataPath, "gameLog.txt");
 
-        // Clear the log file at the start of the session.
+        // // Clear the log file at the start of the session.
         File.WriteAllText(logFilePath, string.Empty);
     }
 
@@ -26,10 +26,10 @@ public class Logger : MonoBehaviour
     /// <param name="message"></param>
     public void Log(string message)
     {
-        string logMessage = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ": " + message;
-        File.AppendAllText(logFilePath, logMessage + "\n");
+        // string logMessage = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ": " + message;
+        // File.AppendAllText(logFilePath, logMessage + "\n");
 
-        // For testing purposes, also log the message to the Unity Console
-        Debug.Log(message);
+        // // For testing purposes, also log the message to the Unity Console
+        // Debug.Log(message);
     }
 }

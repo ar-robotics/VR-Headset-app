@@ -4,6 +4,28 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Collections.Concurrent;
+using OVRSimpleJSON;
+using UnityEditor;
+using System.Collections.Generic;
+
+
+/// <summary>
+/// Class <c> JsonRobotInfo </c>
+/// Represents the JSON data structure for the robot information.
+/// </summary>
+[Serializable]
+public class JsonRobotInfo
+{
+
+    public List<float> accelerometer;
+    public List<float> gyroscope;
+    public List<float> magnetometer;
+    public List<float> motion;
+    public float speed = 88;
+    public float voltage;
+    public int battery_precentage;
+    public string mode;
+}
 
 /// <summary>
 /// Class <c> NetworkManager </c>
@@ -64,6 +86,8 @@ public class NetworkManager : MonoBehaviour
     ///  <code> NetworkManager.OnDataReceived += OnDataReceivedHandler; </code>
     /// </summary>
     public event Action<string> OnDataReceived;
+
+    public event Action<JsonRobotInfo> OnRobotInfoDataReceived;
 
     /// <summary>
     /// Awake is called when the script instance is being loaded.
@@ -200,11 +224,70 @@ public class NetworkManager : MonoBehaviour
         // Process all pending messages
         while (receivedDataQueue.TryDequeue(out string receivedData))
         {
+
+            try
+            {
+                var jsonData = OVRSimpleJSON.JSON.Parse(receivedData);
+
+                if (jsonData == null)
+                {
+                    Debug.LogError("Error parsing JSON: " + receivedData);
+                    return;
+                }
+
+                if (jsonData.HasKey("speed"))
+                {
+                    JsonRobotInfo info = ParseJsonRobotInfo(jsonData);
+                    OnRobotInfoDataReceived?.Invoke(info);
+                    Debug.Log($"Received robot info: {receivedData}");
+                    Debug.Log($"Speed: {info}");
+                    Debug.Log($"Speed: {jsonData}");
+                }
+
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error parsing JSON: {e.Message}");
+            }
+
             // Here you can directly process the data or invoke an event
             // Debug.Log($"Processing received data on the main thread: {receivedData}");
             // For example, invoke a custom event with the received data
             OnDataReceived?.Invoke(receivedData);
         }
+    }
+
+    JsonRobotInfo ParseJsonRobotInfo(OVRSimpleJSON.JSONNode jsonNode)
+    {
+        return new JsonRobotInfo
+        {
+            accelerometer = ParseFloatList(jsonNode["accelerometer"]),
+            gyroscope = ParseFloatList(jsonNode["gyroscope"]),
+            magnetometer = ParseFloatList(jsonNode["magnetometer"]),
+            motion = ParseFloatList(jsonNode["motion"]),
+            speed = jsonNode["speed"].AsFloat,
+            voltage = jsonNode["voltage"].AsFloat,
+            battery_precentage = jsonNode["battery"],
+            mode = jsonNode["mode"]
+        };
+    }
+
+    // helper method to parse a list of floats from a JSON node
+    List<float> ParseFloatList(OVRSimpleJSON.JSONNode node)
+    {
+        List<float> list = new List<float>();
+        if (node.IsArray)
+        {
+            foreach (OVRSimpleJSON.JSONNode n in node.AsArray)
+            {
+                list.Add(n.AsFloat);
+            }
+        }
+        else
+        {
+            Debug.LogError("Node is not an array");
+        }
+        return list;
     }
 
     /// <summary>

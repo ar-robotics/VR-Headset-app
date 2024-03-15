@@ -280,7 +280,9 @@ public class HandDetectionCube : MonoBehaviour
 
         // Map the normalized control values back to the world position within the detection cube
         float worldX = normalizedX * scaleX;
-        float worldZ = normalizedZ * scaleZ;
+        float worldZ = normalizedZ * scaleZ * 2 - scaleZ;
+
+        worldZ = Mathf.Clamp(worldZ, -scaleZ, scaleZ);
 
         Debug.Log($"New Position - X: {worldX}");
         Debug.Log($"New Position -Y: {unchangedY}");
