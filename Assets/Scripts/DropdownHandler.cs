@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 /// <summary>
 /// This script is used to handle the dropdown in the UI. When the dropdown value is changed, it sends the new value to the server.
@@ -30,6 +31,8 @@ public class DropdownHandler : MonoBehaviour
     private NetworkManager networkManager;
     private ModeValues modeValues = new ModeValues();
 
+    public event Action<int> OnDropdownValueChanged;
+
     /// <summary>
     /// Initialization of the script by finding the NetworkManager component in the scene and subscribing to the onValueChanged event of the dropdown.
     /// </summary>
@@ -54,6 +57,7 @@ public class DropdownHandler : MonoBehaviour
         // For example, if (change.value == 0) { // Do something }
         modeValues.mode = change.value;
         SendDataToServer(JsonUtility.ToJson(modeValues));
+        OnDropdownValueChanged?.Invoke(change.value);
     }
 
     /// <summary>

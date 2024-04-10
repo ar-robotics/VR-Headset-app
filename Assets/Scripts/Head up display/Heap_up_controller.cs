@@ -46,8 +46,6 @@ public class Heap_up_controller : MonoBehaviour
     private int battery_precentage;
     private string mode;
 
-    private float head_up_minimum_height;
-
     /// <summary>
     /// Updates the position and rotation of the head up canvas to match the position and rotation of the camera
     /// This allows the user to allways see the head up display in front of them
@@ -77,7 +75,6 @@ public class Heap_up_controller : MonoBehaviour
     {
         networkManager = NetworkManager.Instance;
         networkManager.OnRobotInfoDataReceived += HandleReceivedRobotInfoData;
-        head_up_minimum_height = 2.0f;
     }
 
     private void HandleReceivedRobotInfoData(JsonRobotInfo info)
