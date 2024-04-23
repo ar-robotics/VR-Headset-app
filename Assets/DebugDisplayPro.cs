@@ -59,12 +59,21 @@ public class DebugDisplayPro : MonoBehaviour
     /// <param name="type"></param>
     void HandleLog(string logString, string stackTrace, LogType type)
     {
+
+        if (debugLogs.Count > 30)
+        {
+            debugLogs.Clear();
+        }
         if (type == LogType.Log)
         {
             string[] splitString = logString.Split(char.Parse(":"));
             string debugKey = splitString[0];
             string debugValue = splitString.Length > 1 ? splitString[1] : "";
 
+            // if (debugKey.ToLower().Contains("voice") || debugKey.ToLower().Contains("log"))
+            // {
+            //     return;
+            // }
             if (debugLogs.ContainsKey(debugKey))
             {
                 debugLogs[debugKey] = debugValue;

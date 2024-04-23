@@ -31,6 +31,7 @@ public class DropdownHandler : MonoBehaviour
     private NetworkManager networkManager;
     private ModeValues modeValues = new ModeValues();
 
+    public Responsehandler responsehandler;
     public event Action<int> OnDropdownValueChanged;
 
     /// <summary>
@@ -38,6 +39,7 @@ public class DropdownHandler : MonoBehaviour
     /// </summary>
     void Start()
     {
+
         // Ensure the Dropdown is assigned
         if (dropdown != null)
         {
@@ -45,6 +47,14 @@ public class DropdownHandler : MonoBehaviour
             dropdown.onValueChanged.AddListener(delegate { DropdownValueChanged(dropdown); });
         }
         networkManager = NetworkManager.Instance;
+        responsehandler.OnVoiceCommandReceived += HandleVoiceCommand;
+    }
+
+
+    void HandleVoiceCommand(int mode)
+    {
+        Debug.Log($"Voice Command Received: {mode}");
+        dropdown.value = mode;
     }
 
     /// <summary>
