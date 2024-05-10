@@ -11,6 +11,8 @@ public class MainController : MonoBehaviour
     public GameObject armScene; // Assign in the Unity Editor
 
     public TMP_Dropdown dropdown; // Assign in the Unity Editor
+
+    public ModeAudioPlay modeAudioPlay; // Assign in the Unity Editor
     public XRPokeFollowAffordance EmergencyStopButton;
     void Start()
     {
@@ -63,21 +65,25 @@ public class MainController : MonoBehaviour
                 // Idle mode
                 driveScene.SetActive(false);
                 armScene.SetActive(false);
+                modeAudioPlay.PlayIdle();
                 break;
             case 1:
                 // Drive mode
                 driveScene.SetActive(true);
                 armScene.SetActive(false);
+                modeAudioPlay.PlayDrive();
                 break;
             case 2:
                 // Arm mode
                 driveScene.SetActive(false);
                 armScene.SetActive(true);
+                modeAudioPlay.PlayArm();
                 break;
             case 3:
                 // Emergency Stop mode
                 driveScene.SetActive(false);
                 armScene.SetActive(false);
+                modeAudioPlay.PlayEmergency();
                 break;
             default:
                 // Default case

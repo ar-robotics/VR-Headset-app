@@ -37,6 +37,19 @@ public class JsonRobotInfo
     public float voltage;
     public int battery_precentage;
     public string mode;
+    public float cms_speed;
+}
+
+[Serializable]
+public class JsonArmLengthInfo
+{
+    public int Link_1;
+    public int Link_2;
+    public int Link_3;
+    // public GameObject Link_3;
+    public int Link_4;
+    public int Link_5;
+    public int pintch;
 }
 
 
@@ -68,6 +81,13 @@ public class CameraDepthData
 
     public int time;
     public List<Vector3Data> depthData = new List<Vector3Data>();
+}
+
+[Serializable]
+public class PingData
+{
+    public string type = "ping";
+    public float ping;
 }
 
 /// <summary>
@@ -178,10 +198,27 @@ public class NetworkManager : MonoBehaviour
     /// </summary>
     public event Action<string> OnDataReceived;
 
+    /// <summary>
+    /// Emit event when connected to the server.
+    /// </summary>
+
+    public event Action OnConnected;
+
+    /// <summary>
+    /// Event connection status
+    /// </summary>
+    public event Action<bool> OnConnectionStatus;
+
+    private bool connected = false;
+
     public event Action<JsonRobotInfo> OnRobotInfoDataReceived;
 
     public event Action<DepthData> onDepthDataReceived;
 
+    public event Action<JsonArmLengthInfo> onArmLengthDataReceived;
+
+
+    public event Action<float> onPingDataReceived;
     /// <summary>
     /// The camera depth data.
     /// </summary>
@@ -230,6 +267,37 @@ public class NetworkManager : MonoBehaviour
         // {
         //     depthData = new DepthData();
         // }
+        StartCoroutine(PingRobot());
+        StartCoroutine(InvokeConnectionStatus());
+    }
+
+
+    /// <summary>
+    /// Coroutine for invoking event for connection status
+    /// </summary> 
+    IEnumerator InvokeConnectionStatus()
+    {
+        while (true)
+        {
+            OnConnectionStatus?.Invoke(connected);
+            connected = false;
+            yield return new WaitForSeconds(5);
+        }
+    }
+
+    /// <summary>
+    /// Coroutine for pinging the robot each 5 second
+    /// </summary>
+    IEnumerator PingRobot()
+    {
+        while (true)
+        {
+            PingData pingData = new PingData();
+            pingData.ping = Time.realtimeSinceStartup;
+            SendData(JsonUtility.ToJson(pingData));
+
+            yield return new WaitForSeconds(1);
+        }
     }
 
     /// <summary>
@@ -254,6 +322,7 @@ public class NetworkManager : MonoBehaviour
 
                 // await ReceiveDataAsync();
                 Debug.Log("Connected to server.");
+                OnConnected?.Invoke();
             }
         }
         catch (Exception e)
@@ -437,7 +506,11 @@ public class NetworkManager : MonoBehaviour
 
         if (jsonData["type"] == "log")
         {
-
+            Debug.Log($"Log from robot: {jsonData}");
+        }
+        else if (jsonData["type"] == "ping")
+        {
+            ProcessPingData(jsonData);
         }
         else if (jsonData["type"] == "robot_data")
         {
@@ -452,8 +525,24 @@ public class NetworkManager : MonoBehaviour
         }
         else if (jsonData["type"] == "arm_angles")
         {
+            JsonArmLengthInfo armLengthInfo = ParseArmLengthInfo(jsonData);
+            onArmLengthDataReceived?.Invoke(armLengthInfo);
             Debug.Log($"Arm angels data: {jsonData}");
         }
+    }
+
+    /// <summary>
+    /// process ping data   
+    /// </summary>
+    /// <param name="jsonData"></param>
+
+
+    private void ProcessPingData(OVRSimpleJSON.JSONNode jsonData)
+    {
+        float latency = Mathf.Round((Time.realtimeSinceStartup - jsonData["ping"].AsFloat) * 100000) / 100;
+        Debug.Log($"LatencyNetwork: {latency}");
+        onPingDataReceived?.Invoke(latency);
+        connected = true;
     }
 
     /// <summary>
@@ -591,7 +680,21 @@ public class NetworkManager : MonoBehaviour
             speed = jsonNode["speed"].AsFloat,
             voltage = jsonNode["voltage"].AsFloat,
             battery_precentage = jsonNode["battery"],
-            mode = jsonNode["mode"]
+            mode = jsonNode["mode"],
+            cms_speed = jsonNode["cms_speed"].AsFloat
+        };
+    }
+
+    JsonArmLengthInfo ParseArmLengthInfo(OVRSimpleJSON.JSONNode jsonNode)
+    {
+        return new JsonArmLengthInfo
+        {
+            Link_1 = jsonNode["rotation"].AsInt,
+            Link_2 = jsonNode["shoulder"].AsInt,
+            Link_3 = jsonNode["elbow"].AsInt,
+            Link_4 = jsonNode["tilt"].AsInt,
+            Link_5 = jsonNode["wrist"].AsInt,
+            pintch = jsonNode["pinch"].AsInt
         };
     }
 

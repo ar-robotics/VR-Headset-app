@@ -90,6 +90,29 @@ public class DepthPointCloud : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Interface for requesting depth camera from the robot
+    /// </summary>
+    class RequestDepthDataMsg
+    {
+        public bool get_depth;
+    }
+
+    /// <summary>
+    /// This method is used to request depth data from the server.
+    /// When it is sent, the robot will respond with the depth data only once.
+    /// </summary>
+    public void RequestDepthData()
+    {
+        RequestDepthDataMsg msg = new RequestDepthDataMsg();
+        msg.get_depth = true;
+        networkManager.SendData(JsonUtility.ToJson(msg));
+    }
+
+    /// <summary>
+    /// This method is used 
+    /// </summary>
     void OnDestroy()
     {
         networkManager.onDepthDataReceived -= OnDepthDataReceived;

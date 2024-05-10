@@ -34,7 +34,11 @@ public class Heap_up_controller : MonoBehaviour
     public TMP_Text voltage_text;
     public TMP_Text battery_precentage_text;
     public TMP_Text mode_text;
+    public TMP_Text latecy_text;
 
+    public TMP_Text conenctionStatus_text;
+    private Color connectedColor;
+    private Color disconnectedColor;
 
     // Robot info
     private List<float> accelerometer;
@@ -45,6 +49,7 @@ public class Heap_up_controller : MonoBehaviour
     private float voltage;
     private int battery_precentage;
     private string mode;
+    private float cms_speed;
 
     /// <summary>
     /// Updates the position and rotation of the head up canvas to match the position and rotation of the camera
@@ -75,6 +80,19 @@ public class Heap_up_controller : MonoBehaviour
     {
         networkManager = NetworkManager.Instance;
         networkManager.OnRobotInfoDataReceived += HandleReceivedRobotInfoData;
+        networkManager.onPingDataReceived += HandleReceivedPingData;
+        networkManager.OnConnectionStatus += HandleConnectionStatusChanged;
+        disconnectedColor = conenctionStatus_text.color;
+        connectedColor = latecy_text.color;
+    }
+
+
+    private void HandleConnectionStatusChanged(bool connected)
+    {
+
+        conenctionStatus_text.text = connected ? "Connected" : "Disconnected";
+        conenctionStatus_text.color = connected ? connectedColor : disconnectedColor;
+
     }
 
     private void HandleReceivedRobotInfoData(JsonRobotInfo info)
@@ -97,8 +115,8 @@ public class Heap_up_controller : MonoBehaviour
         }
         if (speed != info.speed)
         {
-            speed = info.speed;
-            speed_text.text = speed.ToString();
+            speed = info.cms_speed;
+            speed_text.text = cms_speed.ToString();
         }
         if (voltage != info.voltage)
         {
@@ -116,6 +134,12 @@ public class Heap_up_controller : MonoBehaviour
             mode_text.text = mode;
         }
 
+    }
+
+    private void HandleReceivedPingData(float ping)
+    {
+        latecy_text.text = ping.ToString();
+        Debug.Log("LatencyPing: " + ping);
     }
     // Update is called once per frame
     void Update()

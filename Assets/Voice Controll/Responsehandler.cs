@@ -9,16 +9,25 @@ using Oculus.Voice;
 public class Responsehandler : MonoBehaviour
 {
     public AppVoiceExperience voiceExperience;
-    // Start is called before the first frame update
+    private NetworkManager networkManager;
+
+
+    public ModeAudioPlay modeAudioPlay; // Assign in the Unity Editor
+
     void Start()
     {
         // voiceExperience.OnVoiceCommandReceived += HandleResponseTest;
         // voiceExperience.OnStartListening += OnStartListening;
         // voiceExperience.OnEmergencyVoiceCommandActivated += OnEmergencyVoiceCommandActivated;
         // voiceExperience.OnEmergency += OnEmergency;
-
+        networkManager = NetworkManager.Instance;
     }
 
+
+    class ScrewCommand
+    {
+        public string screw;
+    }
     private int index = 0;
 
     public event Action<int> OnVoiceCommandReceived;
@@ -45,7 +54,7 @@ public class Responsehandler : MonoBehaviour
         Debug.Log($"Emerg index: {index++}");
         Debug.Log($"Vocie controll Listening Emergency STRING NAME: {em[0]}");
 
-        int mode = 0;
+        int mode = -1;
         switch (em[0].ToLower())
         {
             case "idle":
@@ -63,11 +72,28 @@ public class Responsehandler : MonoBehaviour
                 mode = 3;
                 Debug.Log($"Vocie controll Listening Emergency: {em[0]}");
                 break;
+            case "screw":
+                sendScrewCommandToTheTobot("right");
+                modeAudioPlay.PlayScrew();
+                break;
+            case "unscrew":
+                sendScrewCommandToTheTobot("left");
+                modeAudioPlay.PlayUnScrew();
+                break;
         }
 
-        OnVoiceCommandReceived?.Invoke(mode);
+        if (mode != -1)
+        {
+            OnVoiceCommandReceived?.Invoke(mode);
+        }
     }
+    private void sendScrewCommandToTheTobot(string screw)
+    {
+        ScrewCommand screwCommand = new ScrewCommand();
+        screwCommand.screw = screw;
+        networkManager.SendData(JsonUtility.ToJson(screwCommand));
 
+    }
     public void OnEmergency(string emergency)
     {
         Debug.Log($"Vocie controll Listening Emergency: {emergency}  +{index++}");

@@ -86,7 +86,7 @@ public class ArmController : MonoBehaviour
     private Transform visualIndicatorTransform;
 
     private Material cubeMaterial;
-    public Color insideColor = new Color(1, 0, 0, 0.1f); // Red with low opacity
+    public Color insideColor = new Color(1, 0, 0, 0.2f); // Red with low opacity
     private Color originalColor;
 
     /// <summary>
@@ -118,16 +118,6 @@ public class ArmController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        int Hand_WristRoot = (int)OVRPlugin.BoneId.Hand_WristRoot;
-
-        // Loging to the VR LOG screen in the VR headset
-        OVRBone WristBone = handSkeleton.Bones[Hand_WristRoot];
-        Debug.Log($"Hand_WristRoot bone ID: {Hand_WristRoot}");
-        Debug.Log($"Hand_WristRoot bone position: {WristBone.Transform.position}");
-
-        Debug.Log($"CurrentNumBones: {handSkeleton.GetCurrentNumBones()}");
-        Debug.Log($"Right Hand start: {handSkeleton.GetCurrentStartBoneId()}");
-        Debug.Log($"Right Hanh end: {handSkeleton.GetCurrentEndBoneId()}");
     }
 
 
@@ -141,8 +131,8 @@ public class ArmController : MonoBehaviour
         if (other.CompareTag("TipboneSphere"))
         {
             isHandDetected = true;
-            Debug.Log($"Visualindicator entered cube area.{other.bounds.size}");
-            Debug.Log($"Other size: {other.bounds.size}");
+            // Debug.Log($"Visualindicator entered cube area.{other.bounds.size}");
+            // Debug.Log($"Other size: {other.bounds.size}");
 
             // Change the color of the cube when the hand enters the cube
             cubeMaterial.color = insideColor;
@@ -163,7 +153,7 @@ public class ArmController : MonoBehaviour
         if (other.CompareTag("TipboneSphere"))
         {
             isHandDetected = false;
-            Debug.Log("Hand exited cube area.");
+            // Debug.Log("Hand exited cube area.");
             // Reset the color of the cube when the hand leaves the cube
             cubeMaterial.color = originalColor;
 
@@ -204,7 +194,7 @@ public class ArmController : MonoBehaviour
         while (isHandDetected)
         {
             CalculateNormalizedControlValues(handTransform.position);
-            yield return new WaitForSeconds(distanceCalculationInterval);
+            yield return new WaitForSeconds(sendInterval);
         }
     }
 
@@ -259,11 +249,11 @@ public class ArmController : MonoBehaviour
         }
 
         normalizedY = mappedY;
-        Debug.Log($"HandLocalPosition: {handLocalPosition.y}");
-        Debug.Log($"Transform localScale: {transform.localScale.y}");
-        Debug.Log($"Normalized X: {normalizedX}");
-        Debug.Log($"Normalized Z: {normalizedZ}");
-        Debug.Log($"Normalized Y: {normalizedY}");
+        // Debug.Log($"HandLocalPosition: {handLocalPosition.y}");
+        // Debug.Log($"Transform localScale: {transform.localScale.y}");
+        // Debug.Log($"Normalized X: {normalizedX}");
+        // Debug.Log($"Normalized Z: {normalizedZ}");
+        // Debug.Log($"Normalized Y: {normalizedY}");
 
         SendControlValues(normalizedX, normalizedY, normalizedZ);
         // UpdateVisualIndicator(normalizedX, normalizedZ, normalizedY);
@@ -312,50 +302,59 @@ public class ArmController : MonoBehaviour
     private void SendControlValues(float normalizedX, float normalizedY, float normalizedZ)
     {
 
-        int dropdownValue = dropdownHandler.GetDropdownValue();
-        string data = "";
+        // int dropdownValue = dropdownHandler.GetDropdownValue();
+        // string data = "";
+        controlX.x = normalizedX;
+        controlX.z = normalizedY;
+        controlX.y = normalizedZ;
+        controlX.pinch = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index) ? 1 : 0;
+        controlX.strength = rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
+        string data = JsonUtility.ToJson(controlX);
+        // Debug.Log($"Control ARM values: {data}");
 
-        switch (dropdownValue)
-        {
-            case 0:
-                // Idle mode
-                break;
-            // case 1:
-            //     // Drive mode
-            //     controlValues.x = normalizedX;
-            //     controlValues.y = normalizedZ;
-            //     controlValues.speed = speed;
-            //     data = JsonUtility.ToJson(controlValues);
-            //     Debug.Log($"Drive values: {data}");
-            //     Debug.Log($"Speed: {speed}");
-            //     break;
-            case 2:
-                // Arm mode
-                controlX.x = normalizedX;
-                controlX.z = normalizedY;
-                controlX.y = normalizedZ;
-                controlX.pinch = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index) ? 1 : 0;
-                controlX.strength = rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
-                data = JsonUtility.ToJson(controlX);
-                Debug.Log($"Control ARM values: {data}");
+        SendDataToServer(data);
 
-                break;
-            case 3:
-                // Emergency stop
+        // switch (dropdownValue)
+        // {
+        //     case 0:
+        //         // Idle mode
+        //         break;
+        //     // case 1:
+        //     //     // Drive mode
+        //     //     controlValues.x = normalizedX;
+        //     //     controlValues.y = normalizedZ;
+        //     //     controlValues.speed = speed;
+        //     //     data = JsonUtility.ToJson(controlValues);
+        //     //     Debug.Log($"Drive values: {data}");
+        //     //     Debug.Log($"Speed: {speed}");
+        //     //     break;
+        //     case 2:
+        //         // Arm mode
+        //         controlX.x = normalizedX;
+        //         controlX.z = normalizedY;
+        //         controlX.y = normalizedZ;
+        //         controlX.pinch = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index) ? 1 : 0;
+        //         controlX.strength = rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
+        //         data = JsonUtility.ToJson(controlX);
+        //         Debug.Log($"Control ARM values: {data}");
 
-                break;
-        }
+        //         break;
+        //     case 3:
+        //         // Emergency stop
 
-        if (!dropdownValue.Equals(0) && (lastSendTime == 0 || Time.time - lastSendTime > sendInterval))
-        {
-            SendDataToServer(data);
-            lastSendTime = Time.time;
-            // Convert the control values to a string
-        }
-        else
-        {
-            Debug.Log("No data sent to the robot.");
-        }
+        //         break;
+        // }
+
+        // if (!dropdownValue.Equals(0) && (lastSendTime == 0 || Time.time - lastSendTime > sendInterval))
+        // {
+        //     SendDataToServer(data);
+        //     lastSendTime = Time.time;
+        //     // Convert the control values to a string
+        // }
+        // else
+        // {
+        //     Debug.Log("No data sent to the robot.");
+        // }
 
     }
 

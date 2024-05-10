@@ -1,0 +1,766 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="Basic arm assembly">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.00380985203184991 0.00814825726353621 -0.00233105284996782"
+        rpy="0 0 0" />
+      <mass
+        value="0.235167059677118" />
+      <inertia
+        ixx="0.000136829619935939"
+        ixy="-2.11717002823901E-22"
+        ixz="2.29413373012754E-22"
+        iyy="0.000183424841060507"
+        iyz="6.10739134785518E-23"
+        izz="0.000136829619935939" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 1 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="Link_1">
+    <inertial>
+      <origin
+        xyz="-0.000564703412767111 0.00737909547213431 2.12990605447734E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00763628922233268" />
+      <inertia
+        ixx="2.33561396329846E-06"
+        ixy="-2.86200073716274E-09"
+        ixz="1.13462915563342E-08"
+        iyy="3.27744113916437E-06"
+        iyz="1.03753300000382E-09"
+        izz="2.56532477145443E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0.752941176470588 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_0"
+    type="revolute">
+    <origin
+      xyz="-0.0038099 0.0023311 0.03214"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="Link_1" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="0"
+      upper="3.1416"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Link_2">
+    <inertial>
+      <origin
+        xyz="-0.0322108471620749 1.37806432931598E-14 0.000505950653121921"
+        rpy="0 0 0" />
+      <mass
+        value="0.0582101880777064" />
+      <inertia
+        ixx="1.1566515603708E-05"
+        ixy="1.67530866170466E-17"
+        ixz="-6.40659875575069E-21"
+        iyy="5.07366498014865E-05"
+        iyz="6.30185970034557E-22"
+        izz="4.52624130488437E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.501960784313725 1 0.501960784313725 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_1"
+    type="revolute">
+    <origin
+      xyz="0 0.027 0"
+      rpy="3.1416 1.5708 0" />
+    <parent
+      link="Link_1" />
+    <child
+      link="Link_2" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.1416"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Link_3">
+    <inertial>
+      <origin
+        xyz="-0.0322108471620749 3.09613445992341E-14 0.000505950653121706"
+        rpy="0 0 0" />
+      <mass
+        value="0.0582101880777064" />
+      <inertia
+        ixx="1.1566515603708E-05"
+        ixy="3.76303174409481E-17"
+        ixz="2.01141229106755E-20"
+        iyy="5.07366498014865E-05"
+        iyz="1.28124924770971E-21"
+        izz="4.52624130488437E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.501960784313725 1 0.501960784313725 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_2"
+    type="revolute">
+    <origin
+      xyz="-0.084 0 0"
+      rpy="0 0 -1.5708" />
+    <parent
+      link="Link_2" />
+    <child
+      link="Link_3" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.1416"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Link 4">
+    <inertial>
+      <origin
+        xyz="-0.0308954859836362 -9.54258413213629E-06 -0.0005059506531217"
+        rpy="0 0 0" />
+      <mass
+        value="0.0622222455818236" />
+      <inertia
+        ixx="7.31957022846746E-06"
+        ixy="-2.29218553278415E-08"
+        ixz="-9.99609948842174E-20"
+        iyy="4.50564685467085E-05"
+        iyz="3.73625221984056E-22"
+        izz="4.4213826685387E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link 4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.501960784313725 1 0.501960784313725 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link 4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_3"
+    type="revolute">
+    <origin
+      xyz="-0.084 0 0"
+      rpy="3.1416 0 -1.5708" />
+    <parent
+      link="Link_3" />
+    <child
+      link="Link 4" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="3.1416"
+      effort="1"
+      velocity="1" />
+  </joint>
+  <link
+    name="Link_5">
+    <inertial>
+      <origin
+        xyz="1.17510168262669E-14 0.0202884230751128 0.0131503380736347"
+        rpy="0 0 0" />
+      <mass
+        value="0.0571211482462945" />
+      <inertia
+        ixx="1.56137488364131E-05"
+        ixy="-1.17883163456157E-18"
+        ixz="4.66982167838852E-18"
+        iyy="1.80777649140427E-05"
+        iyz="-1.93269805506753E-06"
+        izz="2.32777584956804E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_4"
+    type="revolute">
+    <origin
+      xyz="-0.0755 0 -0.00050595"
+      rpy="1.5708 1.5621 1.5708" />
+    <parent
+      link="Link 4" />
+    <child
+      link="Link_5" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.5621"
+      upper="1.5795"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Link_gripper_right_base">
+    <inertial>
+      <origin
+        xyz="0.00610868503662098 0.168993636391325 6.06430163102162E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00118076821825667" />
+      <inertia
+        ixx="2.7316068941324E-08"
+        ixy="-6.1115024132591E-22"
+        ixz="3.53816603561634E-11"
+        iyy="1.84200009668776E-07"
+        iyz="-2.3951702751801E-21"
+        izz="1.57671119539623E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_right_base.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_right_base.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_gripper_right_base"
+    type="fixed">
+    <origin
+      xyz="0.0125 0 0.015"
+      rpy="3.1416 0.042855 0" />
+    <parent
+      link="Link_5" />
+    <child
+      link="Link_gripper_right_base" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Link_gripper_right_end">
+    <inertial>
+      <origin
+        xyz="-0.00468697734735113 0.168343695782762 0.00669160531609816"
+        rpy="0 0 0" />
+      <mass
+        value="0.000652163637398932" />
+      <inertia
+        ixx="2.34523770944788E-08"
+        ixy="1.73746608497845E-10"
+        ixz="5.13033003198838E-08"
+        iyy="1.66519931118194E-07"
+        iyz="1.14499464590631E-11"
+        izz="1.435051069775E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_right_end.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.501960784313725 0.501960784313725 0.501960784313725 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_right_end.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_gripper_right_end"
+    type="fixed">
+    <origin
+      xyz="0.019788 0.17199 -0.017921"
+      rpy="-3.1416 -1.1179 0" />
+    <parent
+      link="Link_gripper_right_base" />
+    <child
+      link="Link_gripper_right_end" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Link_gripper_right_support">
+    <inertial>
+      <origin
+        xyz="0.0167959834080883 0.168654050736 -0.167996890001364"
+        rpy="0 0 0" />
+      <mass
+        value="0.000236858407346411" />
+      <inertia
+        ixx="4.13593831831108E-10"
+        ixy="3.10899104660179E-10"
+        ixz="5.21524484083866E-15"
+        iyy="1.82661859085473E-08"
+        iyz="8.19040580389625E-15"
+        izz="1.80213228840835E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_right_support.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_right_support.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_gripper_right_support"
+    type="revolute">
+    <origin
+      xyz="0.0044993 -7.8331E-05 0.032"
+      rpy="3.1416 -0.0019006 -0.017408" />
+    <parent
+      link="Link_5" />
+    <child
+      link="Link_gripper_right_support" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.5689"
+      upper="0.0019006"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Link_gripper_right_support_end">
+    <inertial>
+      <origin
+        xyz="0.148911374531962 0.000350024932742193 -0.0616624819723988"
+        rpy="0 0 0" />
+      <mass
+        value="0.000652163637398935" />
+      <inertia
+        ixx="2.34815415754439E-08"
+        ixy="1.72999659155749E-10"
+        ixz="5.13374061207313E-08"
+        iyy="1.66519932645771E-07"
+        iyz="1.16789359519553E-11"
+        izz="1.43475940968959E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_right_support_end.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.501960784313725 0.501960784313725 0.501960784313725 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_right_support_end.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_gripper_right_support_end"
+    type="fixed">
+    <origin
+      xyz="0.0318459313577292 0.171392493122483 -0.16799679507084"
+      rpy="-3.14150929553947 -1.16267898759699 -0.0174842629087696" />
+    <parent
+      link="Link_gripper_right_support" />
+    <child
+      link="Link_gripper_right_support_end" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Link_gripper_left_base">
+    <inertial>
+      <origin
+        xyz="0.0112074867107235 0.170644277924422 0.0461751805143446"
+        rpy="0 0 0" />
+      <mass
+        value="0.00118076821825666" />
+      <inertia
+        ixx="2.84923375296939E-08"
+        ixy="2.71766094352569E-09"
+        ixz="1.20757126367771E-08"
+        iyy="1.84152558998179E-07"
+        iyz="-2.32498447480159E-10"
+        izz="1.5654230162185E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_left_base.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_left_base.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_gripper_left_base"
+    type="fixed">
+    <origin
+      xyz="-0.0139951551802364 -0.169775747076249 0.0150000000000947"
+      rpy="-3.14159265358969 0.046735627045845 3.12418487107114" />
+    <parent
+      link="Link_5" />
+    <child
+      link="Link_gripper_left_base" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Link_gripper_left_end">
+    <inertial>
+      <origin
+        xyz="0.0817397498326785 0.00634911586300868 0.0323250851710278"
+        rpy="0 0 0" />
+      <mass
+        value="0.000652163637398932" />
+      <inertia
+        ixx="3.63813708270391E-08"
+        ixy="-1.0951849728846E-10"
+        ixz="-6.3380051560476E-08"
+        iyy="1.66519932645771E-07"
+        iyz="-1.34428339276265E-10"
+        izz="1.30576111717363E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_left_end.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_left_end.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_gripper_left_end"
+    type="fixed">
+    <origin
+      xyz="0.0264882202370043 0.173392493122449 0.0627740330934791"
+      rpy="3.13930242587817 1.20779057576466 -0.0195297612363638" />
+    <parent
+      link="Link_gripper_left_base" />
+    <child
+      link="Link_gripper_left_end" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Link_gripper_left_support">
+    <inertial>
+      <origin
+        xyz="0.00048758984452916 -0.000660414344889084 -0.248942505345365"
+        rpy="0 0 0" />
+      <mass
+        value="0.000236858407346411" />
+      <inertia
+        ixx="4.13848282911545E-10"
+        ixy="-3.10896889717982E-10"
+        ixz="-6.69346021370814E-11"
+        iyy="1.82661859085473E-08"
+        iyz="-1.17358822229113E-12"
+        izz="1.80210684330031E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_left_support.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_left_support.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_gripper_left_support"
+    type="fixed">
+    <origin
+      xyz="-0.019497018435776 0.000339434143682142 0.0319714912166448"
+      rpy="0 0.0019005867120053 3.12418487107114" />
+    <parent
+      link="Link_5" />
+    <child
+      link="Link_gripper_left_support" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Link_gripper_left_support_end">
+    <inertial>
+      <origin
+        xyz="-0.00526984664867214 0.00035002493270209 -0.00535056235281295"
+        rpy="0 0 0" />
+      <mass
+        value="0.000652163637398933" />
+      <inertia
+        ixx="2.34523711030141E-08"
+        ixy="1.72996332875409E-10"
+        ixz="-5.1303295439662E-08"
+        iyy="1.66519932645771E-07"
+        iyz="-1.17281020174843E-11"
+        izz="1.43505111441388E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_left_support_end.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Basic arm assembly/meshes/Link_gripper_left_support_end.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint_gripper_left_support_end"
+    type="fixed">
+    <origin
+      xyz="0.015537429427405 -0.0033988567313719 -0.248885392950767"
+      rpy="-8.34128784352777E-05 -1.16296318744265 0.0174843226411675" />
+    <parent
+      link="Link_gripper_left_support" />
+    <child
+      link="Link_gripper_left_support_end" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>

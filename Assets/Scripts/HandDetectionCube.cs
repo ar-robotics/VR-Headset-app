@@ -117,16 +117,16 @@ public class HandDetectionCube : MonoBehaviour
     /// </summary>
     void Update()
     {
-        int Hand_WristRoot = (int)OVRPlugin.BoneId.Hand_WristRoot;
+        // int Hand_WristRoot = (int)OVRPlugin.BoneId.Hand_WristRoot;
 
-        // Loging to the VR LOG screen in the VR headset
-        OVRBone WristBone = handSkeleton.Bones[Hand_WristRoot];
-        Debug.Log($"Hand_WristRoot bone ID: {Hand_WristRoot}");
-        Debug.Log($"Hand_WristRoot bone position: {WristBone.Transform.position}");
+        // // Loging to the VR LOG screen in the VR headset
+        // OVRBone WristBone = handSkeleton.Bones[Hand_WristRoot];
+        // Debug.Log($"Hand_WristRoot bone ID: {Hand_WristRoot}");
+        // Debug.Log($"Hand_WristRoot bone position: {WristBone.Transform.position}");
 
-        Debug.Log($"CurrentNumBones: {handSkeleton.GetCurrentNumBones()}");
-        Debug.Log($"Right Hand start: {handSkeleton.GetCurrentStartBoneId()}");
-        Debug.Log($"Right Hanh end: {handSkeleton.GetCurrentEndBoneId()}");
+        // Debug.Log($"CurrentNumBones: {handSkeleton.GetCurrentNumBones()}");
+        // Debug.Log($"Right Hand start: {handSkeleton.GetCurrentStartBoneId()}");
+        // Debug.Log($"Right Hanh end: {handSkeleton.GetCurrentEndBoneId()}");
     }
 
 
@@ -140,8 +140,8 @@ public class HandDetectionCube : MonoBehaviour
         if (other.CompareTag("TipboneSphere"))
         {
             isHandDetected = true;
-            Debug.Log($"Visualindicator entered cube area.{other.bounds.size}");
-            Debug.Log($"Other size: {other.bounds.size}");
+            // Debug.Log($"Visualindicator entered cube area.{other.bounds.size}");
+            // Debug.Log($"Other size: {other.bounds.size}");
 
             // Change the color of the cube when the hand enters the cube
             cubeMaterial.color = insideColor;
@@ -162,7 +162,7 @@ public class HandDetectionCube : MonoBehaviour
         if (other.CompareTag("TipboneSphere"))
         {
             isHandDetected = false;
-            Debug.Log("Hand exited cube area.");
+            // Debug.Log("Hand exited cube area.");
             // Reset the color of the cube when the hand leaves the cube
             cubeMaterial.color = originalColor;
 
@@ -203,7 +203,7 @@ public class HandDetectionCube : MonoBehaviour
         while (isHandDetected)
         {
             CalculateNormalizedControlValues(handTransform.position);
-            yield return new WaitForSeconds(distanceCalculationInterval);
+            yield return new WaitForSeconds(sendInterval);
         }
     }
 
@@ -254,14 +254,14 @@ public class HandDetectionCube : MonoBehaviour
         // Map the normalized Y value to a range of -1 to 1
         float mappedY = (normalizedY - 0.3f) * 3.0f;
 
-        Debug.Log($"Normalized X: {normalizedX}");
-        Debug.Log($"Normalized Z: {normalizedZ}");
-        Debug.Log($"Normalized Y: {mappedY}");
+        // Debug.Log($"Normalized X: {normalizedX}");
+        // Debug.Log($"Normalized Z: {normalizedZ}");
+        // Debug.Log($"Normalized Y: {mappedY}");
 
         // Calculate speed, send control values to the robot, and update the visual indicator
         int speed = CalculateSpeed(normalizedX, normalizedZ);
         SendControlValues(normalizedX, normalizedZ, mappedY, speed); // Modify to calculate tresholds for X and Z?
-        UpdateVisualIndicator(normalizedX, normalizedZ);
+        // UpdateVisualIndicator(normalizedX, normalizedZ);
     }
 
     /// <summary>
@@ -284,9 +284,9 @@ public class HandDetectionCube : MonoBehaviour
 
         worldZ = Mathf.Clamp(worldZ, -scaleZ, scaleZ);
 
-        Debug.Log($"New Position - X: {worldX}");
-        Debug.Log($"New Position -Y: {unchangedY}");
-        Debug.Log($"New Position -Z: {worldZ}");
+        // Debug.Log($"New Position - X: {worldX}");
+        // Debug.Log($"New Position -Y: {unchangedY}");
+        // Debug.Log($"New Position -Z: {worldZ}");
 
         Vector3 newPosition = new Vector3(worldX, unchangedY, worldZ);
         visualIndicatorTransform.localPosition = newPosition;
@@ -305,49 +305,13 @@ public class HandDetectionCube : MonoBehaviour
     private void SendControlValues(float normalizedX, float normalizedZ, float normalizedY, int speed = 50)
     {
 
-        int dropdownValue = dropdownHandler.GetDropdownValue();
-        string data = "";
-
-        switch (dropdownValue)
-        {
-            case 0:
-                // Idle mode
-                break;
-            case 1:
-                // Drive mode
-                controlValues.x = normalizedX;
-                controlValues.y = normalizedZ;
-                controlValues.speed = speed;
-                data = JsonUtility.ToJson(controlValues);
-                Debug.Log($"Drive values: {data}");
-                Debug.Log($"Speed: {speed}");
-                break;
-            case 2:
-                // Arm mode
-                controlX.x = normalizedX;
-                controlX.y = normalizedY;
-                controlX.pinch = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index) ? 1 : 0;
-                controlX.strength = rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
-                data = JsonUtility.ToJson(controlX);
-                Debug.Log($"Control ARM values: {data}");
-
-                break;
-            case 3:
-                // Emergency stop
-
-                break;
-        }
-
-        if (!dropdownValue.Equals(0) && (lastSendTime == 0 || Time.time - lastSendTime > sendInterval))
-        {
-            SendDataToServer(data);
-            lastSendTime = Time.time;
-            // Convert the control values to a string
-        }
-        else
-        {
-            Debug.Log("No data sent to the robot.");
-        }
+        // int dropdownValue = dropdownHandler.GetDropdownValue();
+        // string data = "";
+        controlValues.x = normalizedX;
+        controlValues.y = normalizedZ;
+        controlValues.speed = speed;
+        string data = JsonUtility.ToJson(controlValues);
+        SendDataToServer(data);
 
     }
 
@@ -398,5 +362,11 @@ public class HandDetectionCube : MonoBehaviour
         {
             Debug.Log("NetworkManager component not found.");
         }
+    }
+
+    void OnDestroy()
+    {
+        StopAllCoroutines();
+        networkManager.OnDataReceived -= HandleReceivedData;
     }
 }

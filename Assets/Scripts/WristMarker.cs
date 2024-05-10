@@ -31,14 +31,18 @@ public class WristMarker : MonoBehaviour
     {
         if (skeleton == null || greenDot == null)
             return;
+
+        // Debug.Log("Time.captureFramerate: " + Time.captureFramerate);
         OVRBone WristBone = skeleton.Bones[Hand_MiddleTip];
         if (WristBone != null)
         {
             // Update the green dot's position to the wrist bone's position
             // Assuming an offset of 0.02 meters (2 cm) above the wrist bone
-            greenDot.transform.position = WristBone.Transform.position + Vector3.up * 0.02f;
+            greenDot.transform.position = WristBone.Transform.position + Vector3.up * 0.01f;
 
             Debug.Log($"Green dot position: {greenDot.transform.position}");
         }
+
     }
+
 }

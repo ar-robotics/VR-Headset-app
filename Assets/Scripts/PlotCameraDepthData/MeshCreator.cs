@@ -37,6 +37,11 @@ public class MeshCreator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Time.frameCount % 1000 == 0)
+        {
+            // CreateCubeGridTest(new DepthData());
+            clearVolumeBoxes();
+        }
     }
 
 
@@ -44,7 +49,7 @@ public class MeshCreator : MonoBehaviour
     {
         clearVolumeBoxes();
         depthData = NormalizeDepthData(depthData); // Normalize the depth data  
-        float localScale = 0.035f;
+        float localScale = 0.03578f;
         // Create a cube grid
 
         foreach (DepthDataPoint point in depthData.Points)

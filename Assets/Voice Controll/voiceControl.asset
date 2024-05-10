@@ -33,10 +33,15 @@ MonoBehaviour:
     isPrivate: 0
     createdAt: 2024-04-18T05:16:34-0700
     trainingStatus: 1
-    lastTrainDuration: 57
-    lastTrainedAt: 2024-04-18T05:19:37-0700
-    nextTrainAt: 2024-04-18T05:18:40-0700
+    lastTrainDuration: 52
+    lastTrainedAt: 2024-04-23T02:02:34-0700
+    nextTrainAt: 2024-04-23T02:01:42-0700
     intents:
+    - id: 970229348165969
+      name: bolt
+      entities:
+      - name: entity:entity
+        id: 1462993687759227
     - id: 2068981956831375
       name: change_mode
       entities:
@@ -72,6 +77,9 @@ MonoBehaviour:
       - name: entity
         id: 1462993687759227
       keywords:
+      - keyword: Screw
+        synonyms:
+        - screw
       - keyword: arm
         synonyms:
         - arm
@@ -84,6 +92,9 @@ MonoBehaviour:
       - keyword: idle
         synonyms:
         - idle
+      - keyword: unscrew
+        synonyms:
+        - unscrew
     traits: []
     versionTags: []
     voices:
