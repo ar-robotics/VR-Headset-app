@@ -5,6 +5,10 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class is used to control the drive mode of the robot.
+/// It allows the user to change the drive mode of the robot.
+/// </summary>
 public class DriveModeController : MonoBehaviour
 {
     private NetworkManager networkManager;
@@ -51,6 +55,9 @@ public class DriveModeController : MonoBehaviour
         updateButtonColor(defaultColor, defaultColor, activeColor);
     }
 
+    /// <summary>
+    /// This method is used to update the drive mode data.
+    /// </summary>
     void updateDriveModeData(string mode)
     {
         DriveMode driveMode = new DriveMode();
@@ -59,7 +66,13 @@ public class DriveModeController : MonoBehaviour
         DriveModeChanged?.Invoke(mode);
     }
 
-
+    /// <summary>
+    /// This method is used to update the color of the buttons.
+    /// </summary>
+    /// <param name="precisionColor"></param>
+    /// <param name="normalColor"></param>
+    /// <param name="reverseColor"></param>
+    /// <summary>
     void updateButtonColor(Color precisionColor, Color normalColor, Color reverseColor)
     {
         // precisionButton.GetComponent<Image>().color = precisionColor;

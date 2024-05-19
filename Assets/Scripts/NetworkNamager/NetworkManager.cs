@@ -286,7 +286,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Coroutine for pinging the robot each 5 second
+    /// Coroutine for pinging the robot each second
     /// </summary>
     IEnumerator PingRobot()
     {
@@ -507,6 +507,7 @@ public class NetworkManager : MonoBehaviour
         if (jsonData["type"] == "log")
         {
             Debug.Log($"Log from robot: {jsonData}");
+            // Logger.Log(jsonData);  // Store the loging data in a file  
         }
         else if (jsonData["type"] == "ping")
         {

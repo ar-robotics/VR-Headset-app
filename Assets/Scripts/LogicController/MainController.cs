@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 using TMPro;
+
+/// <summary>
+/// This class is the main controller for handling scene changes and mode changes.
+/// It enables and disables scenes based on the selected mode dynamically.
+/// </summary>
 public class MainController : MonoBehaviour
 {
     public DropdownHandler dropdownHandler;
@@ -14,6 +19,10 @@ public class MainController : MonoBehaviour
 
     public ModeAudioPlay modeAudioPlay; // Assign in the Unity Editor
     public XRPokeFollowAffordance EmergencyStopButton;
+
+    /// <summary>
+    /// Start is called before the first frame update, it is used to initialize the controller, subscribe to relevant events, and deactivate scenes.
+    /// </summary>
     void Start()
     {
         if (dropdownHandler != null)
@@ -35,6 +44,10 @@ public class MainController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This method is used to handle the emergency stop event.
+    /// </summary>
+    /// <param name="emergency"></param>
     private void HandleEmergencyStop(bool emergency)
     {
         Debug.Log($"Emergency Stop: {emergency}");
@@ -55,6 +68,10 @@ public class MainController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is used to enabling/disabling scenes based on the selected mode.
+    /// </summary>
+    /// <param name="newValue"></param>
     private void HandleDropdownChange(int newValue)
     {
         Debug.Log($"Dropdown value changed to: {newValue}");

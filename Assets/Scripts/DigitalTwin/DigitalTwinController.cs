@@ -10,21 +10,54 @@ using UnityEngine;
 //                 "wrist": 60,   X: Link_5 100 = 0        0 = 90  270 = -170
 //                 "pinch": 50,  slip on x axis: PinchLeft&right  45(unpintch) - 180(pintch)
 //             }
+
+/// <summary>
+/// This class is used to control the digital twin robot.
+/// It updated the position of the digital twin robot based on the received data from the physical robot arm.
+/// </summary>
 public class DigitalTwinController : MonoBehaviour
 {
     private int frameCounter = 0;  // Frame counter to count up to 10
     private bool rotateTo170 = true;
 
     NetworkManager networkManager;
+
+    /// <summary>
+    /// The Articulation Link 1 of the robot.
+    /// </summary>
     public ArticulationBody Link_1;
+
+    /// <summary>
+    /// The Articulation Link 2 of the robot.
+    /// </summary>
     public ArticulationBody Link_2;
+
+    /// <summary>
+    /// The Articulation Link 3 of the robot.
+    /// </summary>
     public ArticulationBody Link_3;
-    // public GameObject Link_3;
+
+    /// <summary>
+    /// The Articulation Link 4 of the robot.
+    /// </summary>
     public ArticulationBody Link_4;
+
+    /// <summary>
+    /// The Articulation Link 5 of the robot.
+    /// </summary>
     public ArticulationBody Link_5;
+
+    /// <summary>
+    /// The Articulation pinch hand left of the robot.
+    /// </summary>
     public GameObject Pinch_left_x;
+
+    /// <summary>
+    /// The Articulation pinch hand right of the robot.
+    /// </summary>
     public GameObject Pinch_right_y;
     // Start is called before the first frame update
+
     void Start()
     {
         networkManager = NetworkManager.Instance;
@@ -34,9 +67,14 @@ public class DigitalTwinController : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// This method is used to handle the received robot info data.
+    /// </summary>
+    /// <param name="robotInfo">The robot info data</param>
+    /// <summary>
     void HandleReceivedRobotInfoData(JsonArmLengthInfo armInfo)
     {
-        SetTargetRotation(Link_1, armInfo.Link_1);
+        SetTargetRotation(Link_1, -armInfo.Link_1);
         SetTargetRotation(Link_2, armInfo.Link_2);
         SetTargetRotation(Link_3, armInfo.Link_3);
         SetTargetRotation(Link_4, armInfo.Link_4);
@@ -45,6 +83,11 @@ public class DigitalTwinController : MonoBehaviour
     }
     // Update is called once per frame
     void Update()
+    {
+
+    }
+
+    void testFunction()
     {
         // frameCounter++;  // Increment frame counter each frame
 
@@ -93,6 +136,9 @@ public class DigitalTwinController : MonoBehaviour
         // }
     }
 
+    /// <summary>
+    /// This method is used to set the target rotation of an Articulation Body.
+    /// </summary>
     void SetTargetRotation(ArticulationBody body, float targetAngle)
     {
         // Get the current xDrive from the Articulation Body
@@ -104,6 +150,12 @@ public class DigitalTwinController : MonoBehaviour
         // Apply the modified drive back to the Articulation Body
         body.xDrive = drive;
     }
+
+    /// <summary>
+    /// This method is used to set the target rotation of an Articulation Body.
+    /// </summary>
+    /// <param name="body"></param>
+    /// <param name="targetAngle"></param>
     void SetTargetRotationY(ArticulationBody body, float targetAngle)
     {
         // Get the current xDrive from the Articulation Body

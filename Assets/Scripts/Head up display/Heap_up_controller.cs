@@ -5,6 +5,10 @@ using UnityEngine;
 using TMPro;
 using Unity.VisualScripting;
 
+/// <summary>
+/// This class is used to control the head up display of the robot.
+/// It allows the user to see the robot info on the head up display.
+/// </summary>
 public class Heap_up_controller : MonoBehaviour
 {
 
@@ -95,6 +99,12 @@ public class Heap_up_controller : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// This method is used to handle the received robot info data.
+    /// It updates the robot info on the head up display if the data has changed.
+    /// </summary>
+    /// <param name="info"></param>
     private void HandleReceivedRobotInfoData(JsonRobotInfo info)
     {
         if (accelerometer != info.accelerometer)
@@ -136,6 +146,12 @@ public class Heap_up_controller : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// This method is used to handle the received ping data.
+    /// It updates the latency on the head up display.
+    /// </summary>
+    /// <param name="ping"></param>
     private void HandleReceivedPingData(float ping)
     {
         latecy_text.text = ping.ToString();

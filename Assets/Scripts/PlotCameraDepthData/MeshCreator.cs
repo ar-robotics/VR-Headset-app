@@ -39,11 +39,9 @@ public class MeshCreator : MonoBehaviour
     {
         if (Time.frameCount % 1000 == 0)
         {
-            // CreateCubeGridTest(new DepthData());
             clearVolumeBoxes();
         }
     }
-
 
     public void CreateCubeGridTest(DepthData depthData)
     {
@@ -54,34 +52,12 @@ public class MeshCreator : MonoBehaviour
 
         foreach (DepthDataPoint point in depthData.Points)
         {
-
             GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
             quad.transform.parent = volume.transform;
             quad.transform.localPosition = new Vector3(point.X, point.Y, point.Z);
             quad.transform.localScale = new Vector3(localScale, localScale, 1);  // Note that the z-scale is irrelevant for quads.
             quad.GetComponent<Renderer>().material.color = depthColorGradient.Evaluate(point.Z);
-
-            // GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            // cube.transform.parent = volume.transform;
-            // cube.transform.localPosition = new Vector3(point.X, point.Y, point.Z);
-            // cube.transform.localScale = new Vector3(localScale, localScale + localScale / 3, localScale);
-            // cube.transform.localRotation = Quaternion.identity;
-            // // cube.GetComponent<Renderer>().material.color = "transparent";
-            // cube.GetComponent<Renderer>().material.color = depthColorGradient.Evaluate(point.Z);
         }
-
-
-
-        // ParticleSystem.Particle[] particles = new ParticleSystem.Particle[depthData.Count];
-        // int index = 0;
-        // foreach (DepthDataPoint point in depthData.Points)
-        // {
-        //     particles[index].position = new Vector3(point.X, point.Y, point.Z);
-        //     particles[index].startColor = depthColorGradient.Evaluate(point.Z);
-        //     particles[index].startSize = localScale;
-        //     index++;
-        // }
-        // particleSystem.SetParticles(particles, particles.Length);
     }
 
     void clearVolumeBoxes()
@@ -94,7 +70,6 @@ public class MeshCreator : MonoBehaviour
 
     void CreateMeshInBoxVolume(DepthData depthData)
     {
-
         depthData = NormalizeDepthData(depthData); // Normalize the depth data
         Mesh mesh = new Mesh();
 
@@ -152,12 +127,18 @@ public class MeshCreator : MonoBehaviour
         }
 
         DepthData normalizedDepthData = new DepthData();
-        // Normalize the depth data
+
+        // Volume scales
+        float scaleX = 1f;
+        float scaleY = 1f;
+        float scaleZ = 1f;
+
+        // Normalize the depth data to the volume's scales
         foreach (DepthDataPoint point in depthData.Points)
         {
-            float normalizedX = Mathf.InverseLerp(minX, maxX, point.X) * -(0.5f - (-0.5f)) + (-0.0f);
-            float normalizedY = Mathf.InverseLerp(minY, maxY, point.Y) * (0.5f - (-0.5f)) + (-0.5f);
-            float normalizedZ = Mathf.InverseLerp(minZ, maxZ, point.Z) * (0.5f - (-0.5f)) + (-0.5f);
+            float normalizedX = Mathf.InverseLerp(minX, maxX, point.X) * scaleX - scaleX / 2;
+            float normalizedY = Mathf.InverseLerp(minY, maxY, point.Y) * scaleY - scaleY / 2;
+            float normalizedZ = Mathf.InverseLerp(minZ, maxZ, point.Z) * scaleZ - scaleZ / 2;
             normalizedDepthData.AddDepthDataPoint(normalizedX, normalizedY, normalizedZ);
         }
 
